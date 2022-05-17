@@ -1,0 +1,70 @@
+import java.io.BufferedReader;
+public class Server{
+    private static Socket socket;
+    public static void main(String args[]){
+        try{
+            int port = 25000;
+            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("Server has Started and Listening to port 25000");
+            
+            while(true){
+                socket = ServerSocket.accept();
+                InputStream is = socket.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String number = br.readLine();
+                System.out.println("Message Recieved from Client :"+number);
+                
+                String returnMessage;
+                try{
+                    int NumberInIntFormat = Integer.parseInt(number);
+                    int returnValue = NumberInIntFormat*2;
+                    returnMessage = String.valueOf(returnValue)+"\n";
+                }
+                catch(NumberFormatException e){
+                    returnMessage = "Please Send a proper Number\n";
+                }
+                
+                OutputStream os = socket.getOutputStream();
+                OutputStreamWriter osw = new OutputStreamWriter(os);
+                BufferedWriter bw = new BufferedWriter(osw);
+                bw.write(returnMessage);
+                System.out.println("Message Sent to Client : "+returnMessage);
+                bw.flush();
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                socket.close();
+            }
+            catch(Exception e){
+            }
+        }
+    }
+}
+
+
+
+
+
+
+Client Server Implementation using java socket :
+
+
+1. create Client.java .
+2. create Server.java .
+3. compile both files using javac *.java , it will generate .class files
+4. Open two terminal windows one for Server and another for Client.
+5.Run the server first in one terminal window using java Server
+  it will show -  Server started
+		    Waiting for a client …
+6.Run the client in another windows using java Client
+7.Then you can start typing messages in the Client window, Which the Server simultaneously receives and shows
+
+Notice that sending “Over” closes the connection between the Client and the Server just like said before.
+
+
+
